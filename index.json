@@ -1,0 +1,113 @@
+[
+{
+	"uri": "/3-query-with-athena/1-create-crawler/",
+	"title": "Create Data Catalog",
+	"tags": [],
+	"description": "",
+	"content": "Steps Create Data Catalog Database Go to the AWS Glue Service page. On the navigation bar, under Data Catalog select Database -\u0026gt; Add database 3. Create a new Data Catalog Crawler Go to the AWS Glue Service page. On the navigation bar, under Data Catalog select Crawler -\u0026gt; Create crawler Under Crawler details, enter \u0026ldquo;datalake-parquet-crawler\u0026rdquo; in the Name field and click Next. Select add a data source under Data source. Select Browse S3 and navigate to the warehouse folder. 5. Click Add an S3 data source and click Next. 6. In the IAM Role section, select AWSGlueServiceRole-datalake and click Next. 7. Select datawarehouse in the target database section and click Next. Review the information and click Create crawler. Select the crawler datalake-parquet-crawler and click Run crawler to run it. Check that the crawler runs successfully. "
+},
+{
+	"uri": "/1-prerequisite/1-dataset/",
+	"title": "Download dataset",
+	"tags": [],
+	"description": "",
+	"content": "In this section, we will work with a dataset taken from Kaggle. This dataset includes products sold on Amazon, containing information such as name, price, product type, number of sales, etc.\nLink to download dataset: Amazon Products Dataset 2023 (1.4M Products)\nAmazon categories table: Amazon products table: "
+},
+{
+	"uri": "/2-etl-with-glue/1-extract-data/",
+	"title": "Extract",
+	"tags": [],
+	"description": "",
+	"content": "Extract In the Visual ETL page, in the Add notes -\u0026gt; Sources section, select Amazon S3 (where the prepared data file is stored). Click on the Data source - S3 Bucket node. In the Data source properties - S3 table, select Browse S3 to browse to the folder containing the prepared data. In the Choose an S3 bucket box, select Bucket fcjworkshop -\u0026gt; staging -\u0026gt; select amazon_categories.csv. Click choose to proceed to select the file. Enter Amazon categories in the Name field to name the node. In the Data format field, select CSV to select the source data type. Continue to create a new node similar to the above steps and select the amazon_products.csv file. Name the node Amazon products and select Data format: CSV. Select Save on the toolbar to save the results. "
+},
+{
+	"uri": "/1-prerequisite/",
+	"title": "Preparation Steps",
+	"tags": [],
+	"description": "",
+	"content": "Preparation Steps In this exercise, we will build a data pipeline according to the diagram below:\nContent Download dataset Create S3 Bucket Configuring roles for AWS Glue "
+},
+{
+	"uri": "/",
+	"title": "Build a Simple Data Pipeline with AWS Glue",
+	"tags": [],
+	"description": "",
+	"content": "Build a Simple Data Pipeline with AWS Glue Overview In this workshop, I will guide you through how to build a simple Data Pipeline without any code with AWS Glue. ETL ETL stands for Extract, Transform, Load and is a process used in data warehousing to extract data from various sources, transform it into a format suitable for loading into the data warehouse, and then load it into the warehouse. The ETL process can be divided into the following three stages:\nExtract : The first stage in the ETL process is to extract data from various sources such as transactional systems, spreadsheets, and flat files. This step involves reading the data from the source systems and storing it in the staging area. Transform : In this stage, the extracted data is transformed into a format suitable for loading into the data warehouse. This may include data cleansing and validation, data type conversion, combining data from multiple sources, and creating new data fields. Load : Once the data is transformed, it is loaded into the data warehouse. This step involves creating the physical data structure and loading the data into the warehouse. The ETL process is an iterative process as new data is added to the warehouse. This process is important because it ensures that the data in the data warehouse is accurate, complete, and up-to-date. It also helps ensure that the data is in the format needed for data mining and reporting.\nAmazon S3 (Simple Storage Service) Amazon Simple Storage Service (Amazon S3) is an object storage service offering industry-leading scalability, data availability, security, and performance. Millions of customers of all sizes and industries store, manage, analyze, and protect any amount of data for virtually any use case, such as data lakes, cloud-native applications, and mobile apps. With cost-effective storage classes and easy-to-use management features, you can optimize costs, organize and analyze data, and configure fine-tuned access controls to meet specific business and compliance requirements.\nAWS Glue AWS Glue is a serverless data integration service that makes it easy to discover, prepare, move, and integrate data from multiple sources for analytics, machine learning (ML), and application development.\nAmazon Athena Amazon Athena is a serverless, interactive analytics service built on open source frameworks and supporting open file and table formats. Athena provides a simple, flexible way to analyze petabytes of data where it lives. Analyze data or build applications from an Amazon Simple Storage Service (S3) data lake and over 30 other data sources, including on-premises and other cloud systems using SQL or Python. Athena is built on the open source tools Trino and Presto and the Apache Spark framework, requiring no provisioning or configuration.\nKey Content Prerequisite ETL with AWS Glue Query with Athena Clean up resource "
+},
+{
+	"uri": "/1-prerequisite/2-create-s3/",
+	"title": "Create S3 Bucket",
+	"tags": [],
+	"description": "",
+	"content": "We will use S3 as a data storage location. The bucket will contain 2 files: staging (containing raw data) and warehouse (containing clean data).\nSteps Create S3 bucket Go to Amazon S3 homepage. Select Create bucket in the upper right corner. On the Create bucket page, enter the bucket name in the Bucket name bar. For example: fcjworkshop-abcxyz, \u0026hellip; Note: the bucket name must be unique and follow the rules. Select Create bucket to create the bucket. Create bucket folder After creating the bucket, we need to create 2 more folders: staging (source) and warehouse (destination).\nSelect Buckets on the navigation bar.\nSelect the newly created Bucket (fcjworkshop) Select Create folder In the Folder name box, enter the staging folder name and click Create folder to create it. Continue to create the warehouse folder similarly. Upload the data set to S3 After creating the S3 bucket, we need to upload the 2 previously prepared data files to the bucket.\nSelect the fcjworkshop bucket. Click on the staging folder just created. Select Upload to upload the file. On the Upload page, select Add files. A window will appear. Navigate to the Downloads folder and select the 2 previously downloaded files. Select Upload to upload the file to the bucket. Check the status after uploading. "
+},
+{
+	"uri": "/2-etl-with-glue/",
+	"title": "Perform ETL steps with AWS Glue",
+	"tags": [],
+	"description": "",
+	"content": "In this section, we will use AWS Glue to transform and transfer data from the staging folder (contain raw data) to the warehouse (contain transformed data) folder.\nSteps Go to the AWS Glue page. On the navigation bar, select ETL Jobs -\u0026gt; Visual ETL. In the Create job section, select Visual ETL to create the ETL pipeline. On the toolbar, select Job details. In the Name section, name the Amazon product pipeline Select the IAM Role \u0026ldquo;AWSGlueServiceRole-datalake\u0026rdquo; created earlier. Click Save to save. Next, we will go into the Extract, Transform and Load processes in turn. "
+},
+{
+	"uri": "/3-query-with-athena/2-query/",
+	"title": "Querying with Athena",
+	"tags": [],
+	"description": "",
+	"content": "In this step, we will perform some simple SQL queries with Athena\nGo to the Amazon Athena page. On the navigation bar, select Query Editor. Select the database datawarehouse Execute the following command: SELECT category_name, COUNT(*)\rFROM warehouse\rGROUP BY category_name; 5. We see the query results, execution time, and amount of data displayed as shown below. In addition, we can create View/Table from the query, store it in S3, connect to BI, Analytics applications, ML tools,\u0026hellip;\n"
+},
+{
+	"uri": "/2-etl-with-glue/2-transform-data/",
+	"title": "Transform",
+	"tags": [],
+	"description": "",
+	"content": "Transform In the Amazon products pipeline job, select Add notes -\u0026gt; Transforms. Select Join to combine the 2 tables together. Click on the Transform - Join node. In the Transform -\u0026gt; Node parents table, select Data source (2 nodes Amazon products categories and Amazon products pipeline) created in the Extract section. In the Join conditions section, select the id field of the Amazon categories node and the category_id field of the Amazon products pipeline node. (This operation will merge fields that share the same product classification code (id_category) together). After merging the two tables together, we will proceed to delete redundant fields that are not needed for analysis or visualization. The purpose of this is to reduce unnecessary data, help optimize storage capacity and improve performance. (Can be done together with step 5) In the Add node -\u0026gt; Transform section, select Drop Fields. Check the unnecessary columns. Next, we will proceed to edit the data types of the fields in the table. In the Add node -\u0026gt; Transform section, select Change Schema. Edit the data type of the fields accordingly (You can see the Data preview section to see the data type of the columns). Click Save to save the progress. "
+},
+{
+	"uri": "/1-prerequisite/3-configure_aws_glue_role/",
+	"title": "Configuring Roles for AWS Glue",
+	"tags": [],
+	"description": "",
+	"content": "Configuring Roles for AWS Glue Create Policy Go to the IAM Services page. On the navigation bar, select Policies -\u0026gt; Create policy. On the Create policy page, select the JSON tab. Copy the Policy content below into the Policy editor: {\r\u0026#34;Version\u0026#34;: \u0026#34;2012-10-17\u0026#34;,\r\u0026#34;Statement\u0026#34;: [\r{\r\u0026#34;Sid\u0026#34;: \u0026#34;s0\u0026#34;,\r\u0026#34;Effect\u0026#34;: \u0026#34;Allow\u0026#34;,\r\u0026#34;Action\u0026#34;: [\r\u0026#34;s3:PutObject\u0026#34;,\r\u0026#34;s3:GetObject\u0026#34;,\r\u0026#34;s3:ListBucket\u0026#34;,\r\u0026#34;s3:DeleteObject\u0026#34;\r],\r\u0026#34;Resource\u0026#34;: [\r\u0026#34;arn:aws:s3:::YOUR-BUCKET-NAME\u0026#34;,\r\u0026#34;arn:aws:s3:::YOUR-BUCKET-NAME/*\u0026#34;\r]\r}\r]\r} Note that replace {YOUR-BUCKET-NAME} with your bucket name.\nClick Next to move to the next step.\nOn the Review and create page, enter Datalakepolicy in the Policy name field.\nEnter \u0026ldquo;Allow AWS Glue access to S3.\u0026rdquo; in the Description field. 6. Select Create policy to create the policy.\nCreate a role for AWS Glue On the navigation bar, select Roles -\u0026gt; Create role. 2. In the Use case field, search for and select Glue. Select Next to continue. 3. In the Permission policy section, search for Datalakepolicy, AWSGlueServiceRole and select them. Click Next to continue. 4. Fill in AWSGlueServiceRole-datalake in the Role name field and double-check the information. 5. Click Create role to create.\n"
+},
+{
+	"uri": "/2-etl-with-glue/3-load-data/",
+	"title": "Load",
+	"tags": [],
+	"description": "",
+	"content": "Load After performing the transformations, we need to put the processed data into storage so that it can be used\nIn the Amazon product pipeline job, select Add node -\u0026gt; Target. In the format section, select Parquet as the format of the final data. Select Amazon S3. In the S3 Target Location section, click Browse S3 to point to the destination of the transformed data. Select fcjworkshop -\u0026gt; warehouse Click Choose to select the warehouse folder as the location to store the transformed data. Click Save to save the progress. "
+},
+{
+	"uri": "/3-query-with-athena/",
+	"title": "Query with Athena",
+	"tags": [],
+	"description": "",
+	"content": "In this section, we will perform data query with Amazon Athena service. Athena can query data on S3 via AWS Glue Data Catalog.\nContents Create crawler Query with Athena "
+},
+{
+	"uri": "/4-delete-resource/",
+	"title": "Clean up resources",
+	"tags": [],
+	"description": "",
+	"content": "We will delete the resources in the following order:\nDelete ETL Jobs, Crawlers, Database Go to AWS Glue.\nClick ETL Jobs in the navigation bar. Select Amazon product pipeline -\u0026gt; Actions -\u0026gt; Delete job(s). Click delete. Click Crawler in the navigation bar.\nSelect datalake-parquet-crawler. Select Action -\u0026gt; Delete crawler. Click delete. Click Database in the navigation bar.\nSelect database datawarehouse. Select Delete. Click Delete. Empty and delete S3 Bucket Go to S3 Service. Select aws-glue-assets-xxxxxxx-region. Select Empty. Enter \u0026ldquo;permanently delete\u0026rdquo; to confirm emptying (deleting all data) the bucket. Click Empty. Click Exit. Select aws-glue-assets-xxxxxxx-region. Click Delete. Enter the name of the selected bucket to confirm deleting the bucket. Click Delete bucket. Select fcjworkshop-xxxx. Click Delete. Enter the name of the selected bucket to confirm deleting the bucket. Click Delete bucket. "
+},
+{
+	"uri": "/2-etl-with-glue/4-run-pipeline/",
+	"title": "Run ETL Pipeline",
+	"tags": [],
+	"description": "",
+	"content": "Run Go to the AWS Glue page. Select ETL jobs. Click Amazon product pipeline. Click Run to run. Select Run detail or Runs to see the status of the run. After running, we can access S3 Bucket to see the results. Go to Amazon S3. Select bucket fcjworkshop -\u0026gt; warehouse. In the warehouse folder, there are parquet files that the Glue job ran (the processed data files). "
+},
+{
+	"uri": "/categories/",
+	"title": "Categories",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "/tags/",
+	"title": "Tags",
+	"tags": [],
+	"description": "",
+	"content": ""
+}]

@@ -1,0 +1,113 @@
+[
+{
+	"uri": "/vi/1-prerequisite/",
+	"title": "Các bước chuẩn bị",
+	"tags": [],
+	"description": "",
+	"content": "Các bước chuẩn bị Trong bài thực hành này, chúng ta sẽ xây dựng một mô hình theo sơ đồ bên dưới:\nNội dung Tải tệp dữ liệu Tạo S3 Bucket Cấu hình role cho AWS Glue "
+},
+{
+	"uri": "/vi/2-etl-with-glue/1-extract-data/",
+	"title": "Extract (Trích xuất)",
+	"tags": [],
+	"description": "",
+	"content": "Extract (Trích xuất) Trong trang Visual ETL, tại mục Add notes -\u0026gt; Sources, chọn Amazon S3 (nơi chứa tập tin dữ liệu đã chuẩn bị). Click vào node Data source - S3 Bucket. Tại bảng Data source properties - S3, chọn Browse S3 để duyệt đến folder chứa dữ liệu đã chuẩn bị. Ở hộp Choose an S3 bucket, chọn Bucket fcjworkshop -\u0026gt; staging -\u0026gt; chọn amazon_categories.csv. Nhấn choose để tiến hành chọn file. Điền Amazon categories vào mục Name để đặt tên cho node. Tại mục Data format, chọn CSV để chọn kiểu dữ liệu nguồn. Tiếp tục tạo một node mới tương tự các bước trên và chọn file amazon_products.csv. Đặt tên Amazon products cho node và chọn Data format: CSV. Chọn Save trên thanh công cụ để lưu lại kết quả. "
+},
+{
+	"uri": "/vi/1-prerequisite/1-dataset/",
+	"title": "Tải xuống dataset",
+	"tags": [],
+	"description": "",
+	"content": "Trong phần này, chúng ta sẽ làm việc với bộ dữ liệu được lấy từ Kaggle. Bộ dữ liệu này bao gồm các sản phẩm được bán ra trên Amazon, chứa các thông tin như tên, giá, loại sản phẩm, số lượt bán,\u0026hellip;\nLink tải dataset: Amazon Products Dataset 2023 (1.4M Products)\nBảng Amazon categories: Bảng Amazon products: "
+},
+{
+	"uri": "/vi/3-query-with-athena/1-create-crawler/",
+	"title": "Tạo Data Catalog",
+	"tags": [],
+	"description": "",
+	"content": "Các bước thực hiện Tạo Data Catalog Database Truy cập trang Dịch vụ AWS Glue. Trên thanh điều hướng, tại mục Data Catalog chọn Database -\u0026gt; Add database Tạo Data Catalog Crawler mới Truy cập trang Dịch vụ AWS Glue. Trên thanh điều hướng, tại mục Data Catalog chọn Crawler -\u0026gt; Create crawler Tại mục Crawler details, nhập \u0026ldquo;datalake-parquet-crawler\u0026rdquo; vào mục Name và nhấn Next. Chọn add a data source tại mục Data source. Chọn Browse S3 và trỏ tới folder warehouse. Nhấn Add an S3 data source và nhấn Next. Tại mục IAM Role, chọn AWSGlueServiceRole-datalake và nhấn Next. Chọn datawarehouse tại mục target database và nhấn Next. Kiểm tra lại các thông tin và nhấn Create crawler.\nChọn crawler datalake-parquet-crawler và bấm Run crawler để chạy. Kiểm tra crawler chạy thành công. "
+},
+{
+	"uri": "/vi/",
+	"title": "Xây dựng một Data Pipeline đơn giản với AWS Glue",
+	"tags": [],
+	"description": "",
+	"content": "Xây dựng một Data Pipeline đơn giản với AWS Glue Tổng quan Trong workshop này, mình sẽ hướng dẫn cho các bạn cách để xây dựng một ETL Data Pipeline đơn giản mà không cần bất cứ dòng code nào với AWS Glue. ETL ETL là viết tắt của Extract (Trích xuất), Transform (Chuyển đổi), Load (Tải) và là một quy trình được sử dụng trong kho dữ liệu để trích xuất dữ liệu từ nhiều nguồn khác nhau, chuyển đổi thành định dạng phù hợp để tải vào kho dữ liệu, sau đó tải vào kho. Quy trình ETL có thể được chia thành ba giai đoạn sau:\nTrích xuất : Giai đoạn đầu tiên trong quy trình ETL là trích xuất dữ liệu từ nhiều nguồn khác nhau như hệ thống giao dịch, bảng tính và tệp phẳng. Bước này bao gồm việc đọc dữ liệu từ các hệ thống nguồn và lưu trữ dữ liệu đó trong vùng dàn dựng. Biến đổi : Trong giai đoạn này, dữ liệu được trích xuất được chuyển đổi thành định dạng phù hợp để tải vào kho dữ liệu. Điều này có thể bao gồm việc làm sạch và xác thực dữ liệu, chuyển đổi kiểu dữ liệu, kết hợp dữ liệu từ nhiều nguồn và tạo trường dữ liệu mới. Tải : Sau khi dữ liệu được chuyển đổi, nó được tải vào kho dữ liệu. Bước này bao gồm việc tạo cấu trúc dữ liệu vật lý và tải dữ liệu vào kho. Quy trình ETL là một quy trình lặp đi lặp lại khi dữ liệu mới được thêm vào kho. Quy trình này quan trọng vì nó đảm bảo dữ liệu trong kho dữ liệu là chính xác, đầy đủ và cập nhật. Nó cũng giúp đảm bảo dữ liệu ở định dạng cần thiết cho khai thác dữ liệu và báo cáo.\nAmazon S3 (Simple Storage Service) Amazon S3 là dịch vụ lưu trữ đối tượng được xây dựng để lưu trữ và truy xuất bất kỳ lượng dữ liệu nào từ bất cứ nơi nào. Đây là dịch vụ lưu trữ đơn giản có độ bền, độ sẵn có, hiệu suất, tính bảo mật dẫn đầu ngành và khả năng thay đổi quy mô gần như không giới hạn với chi phí cực kỳ thấp.\nAWS Glue AWS Glue là một dịch vụ tích hợp dữ liệu phi máy chủ, giúp người dùng dễ dàng khám phá, chuẩn bị, di chuyển và tích hợp dữ liệu từ nhiều nguồn cho hoạt động phân tích, máy học (ML) và phát triển ứng dụng.\nAmazon Athena Amazon Athena là một dịch vụ phân tích tương tác phi máy chủ, được xây dựng trên các khung nguồn mở và hỗ trợ định dạng tệp cũng như bảng mở. Athena mang đến cách thức đơn giản, linh hoạt để phân tích hàng petabyte dữ liệu ở chính nơi lưu trữ dữ liệu đó. Phân tích dữ liệu hoặc xây dựng ứng dụng từ một hồ dữ liệu thuộc Dịch vụ lưu trữ đơn giản (S3) của Amazon và hơn 30 nguồn dữ liệu khác, bao gồm các nguồn dữ liệu tại chỗ hoặc các hệ thống đám mây khác sử dụng SQL hay Python. Athena được xây dựng dựa trên các công cụ nguồn mở Trino và Presto cùng với khung Apache Spark, không yêu cầu phải cung cấp tài nguyên hay cấu hình.\nNội dung chính Các bước chuẩn bị ETL với AWS Glue Truy vấn với Athena Dọn dẹp tài nguyên "
+},
+{
+	"uri": "/vi/1-prerequisite/2-create-s3/",
+	"title": "Tạo S3 Bucket",
+	"tags": [],
+	"description": "",
+	"content": "Chúng ta sẽ sử dụng S3 làm nơi lưu trữ dữ liệu. Trong bucket sẽ chứa 2 tập tin: staging (chứa dữ liệu thô) và warehouse (chứa dữ liệu sạch).\nCác bước thực hiện Tạo S3 bucket Truy cập trang Amazon S3 homepage. Chọn Create bucket ở góc trên bên phải. Trong trang Create bucket, nhập tên bucket vào thanh Bucket name. Ví dụ: fcjworkshop-abcxyz, \u0026hellip; Lưu ý: tên bucket cần độc nhất và tuân theo quy tắc. Chọn Create bucket để tiến hành tạo bucket. Tạo bucket folder Sau khi tạo bucket, ta cần tạo thêm 2 thư mục: staging (source) và warehouse (destination).\nChọn Buckets trên thanh điều hướng. Chọn Bucket vừa tạo (fcjworkshop) Chọn Create folder Trong hộp Folder name, nhập tên thư mục staging và bấm Create folder để tạo. Tiếp tục tạo folder warehouse tương tự. Tải tập dữ liệu vào S3 Sau khi tạo xong S3 bucket, ta cần tiến hành tải lên 2 tệp dữ liệu đã được chuẩn bị từ trước vào bucket.\nChọn bucket fcjworkshop. Nhấp vào thư mục staging vừa tạo. Chọn mục Upload để tiến hành tải file lên. Trong trang Upload, chọn Add files. Khi đó một cửa sổ sẽ hiện lên. Di chuyển đến folder Downloads và chọn 2 tệp dữ liệu đã tải về trước đó. Chọn Upload để tiến hành tải file lên bucket. Kiểm tra trạng thái sau khi upload. "
+},
+{
+	"uri": "/vi/2-etl-with-glue/",
+	"title": "Thực hiện các bước ETL với AWS Glue",
+	"tags": [],
+	"description": "",
+	"content": "Trong phần này, chúng ta sẽ sử dụng AWS Glue để biến đổi và chuyển dữ liệu từ folder staging vào folder warehouse.\nCác bước thực hiện Truy cập vào trang AWS Glue. Trên thanh điều hướng, chọn mục ETL Jobs -\u0026gt; Visual ETL. Tại mục Create job, chọn Visual ETL để tiến hành tạo ETL pipeline. Trêm thanh công cụ, chọn Job details. Tại mục Name, đặt tên Amazon product pipeline Chọn IAM Role \u0026ldquo;AWSGlueServiceRole-datalake\u0026rdquo; đã tạo trước đó. Bấm Save để lưu. Tiếp theo, ta sẽ lần lượt đi sâu vào quá trình Extract, Transform và Load. "
+},
+{
+	"uri": "/vi/2-etl-with-glue/2-transform-data/",
+	"title": "Transform (Biến đổi)",
+	"tags": [],
+	"description": "",
+	"content": "Transform (Biến đổi) Trong job Amazon products pipeline, chọn mục Add notes -\u0026gt; Transforms. Chọn Join để tiến hành kết hợp 2 bảng lại với nhau. Click vào node Transform - Join. Tại bảng Transform -\u0026gt; Node parents chọn Data source (2 node Amazon products categories và Amazon products pipeline) đã tạo tại phần Extract. Tại mục Join conditions, chọn trường id của node Amazon categories và trường category_id của node Amazon products pipeline. (Thao tác này sẽ gộp các trường có chung mã số phân loại hàng hóa (id_category) với nhau). Sau khi gộp 2 bảng vào nhau, ta sẽ tiến hành xóa đi những trường dư thừa, không cần dùng tới để phân tích hoặc trực quan hóa. Mục đích của việc này nhằm giảm dữ liệu không cần thiết, giúp tối ưu hóa dung lượng lưu trữ và nâng cao hiệu suất. (Có thể thực hiện cùng với bước 5) Tại mục Add node -\u0026gt; Transform, chọn mục Drop Fields. Tích vào những cột không cần thiết. Tiếp đó, chúng ta sẽ tiến hành chỉnh sửa các kiểu dữ liệu của các trường trong bảng. Tại mục Add node -\u0026gt; Transform, chọn Change Schema. Chỉnh sửa kiểu dữ liệu của các trường sao cho phù hợp (Có thể xem phần Data preview để biết kiểu dữ liệu của các cột). Bấm Save để lưu tiến trình. "
+},
+{
+	"uri": "/vi/3-query-with-athena/2-query/",
+	"title": "Truy vấn với Athena",
+	"tags": [],
+	"description": "",
+	"content": "Ở bước này, ta sẽ thực hiện một vài truy vấn SQL đơn giản với Athena\nTruy cập trang Amazon Athena. Trên thanh điều hướng, chọn Query Editor. Chọn database datawarehouse Thực hiện câu lệnh sau: SELECT category_name, COUNT(*) FROM warehouse\rGROUP BY category_name; 5. Ta thấy kết quả truy vấn, thời gian thực thi, lượng dữ liệu được hiển thị như hình bên dưới. Ngoài ra, ta có thể tạo View/Table từ câu truy vấn, lưu trữ vào S3, kết nối với các BI, Analytics applications, ML tools,\u0026hellip;\n"
+},
+{
+	"uri": "/vi/1-prerequisite/3-configure_aws_glue_role/",
+	"title": "Cấu hình role cho AWS Glue",
+	"tags": [],
+	"description": "",
+	"content": "Cấu hình role cho AWS Glue Tạo Policy Truy cập vào trang Dịch vụ IAM. Trên thanh điều hướng, chọn Policies -\u0026gt; Create policy. Trong trang Create policy chọn tab JSON. Copy nội dung Policy dưới đây vào Policy editor: {\r\u0026#34;Version\u0026#34;: \u0026#34;2012-10-17\u0026#34;,\r\u0026#34;Statement\u0026#34;: [\r{\r\u0026#34;Sid\u0026#34;: \u0026#34;s0\u0026#34;,\r\u0026#34;Effect\u0026#34;: \u0026#34;Allow\u0026#34;,\r\u0026#34;Action\u0026#34;: [\r\u0026#34;s3:PutObject\u0026#34;,\r\u0026#34;s3:GetObject\u0026#34;,\r\u0026#34;s3:ListBucket\u0026#34;,\r\u0026#34;s3:DeleteObject\u0026#34;\r],\r\u0026#34;Resource\u0026#34;: [\r\u0026#34;arn:aws:s3:::YOUR-BUCKET-NAME\u0026#34;,\r\u0026#34;arn:aws:s3:::YOUR-BUCKET-NAME/*\u0026#34;\r]\r}\r]\r} Chú ý thay phần {YOUR-BUCKET-NAME} bằng tên bucket của bạn.\nNhấn Next để chuyển sang bước tiếp theo. Tại trang Review and create, nhập Datalakepolicy vào mục Policy name. Nhập \u0026ldquo;Allow AWS Glue access to S3.\u0026rdquo; vào phần Description. Chọn Create policy để tạo policy. Tạo role cho AWS Glue Trên thanh điều hướng, chọn Roles -\u0026gt; Create role. Ở mục Use case, tìm kiếm và chọn Glue. Chọn Next để tiếp tục. Trong mục Permission policy, tìm kiếm Datalakepolicy, AWSGlueServiceRole và chọn. Nhấn Next để tiếp tục. Điền AWSGlueServiceRole-datalake vào mục Role name và kiểm tra lại các thông tin. Nhấn Create role để tạo. "
+},
+{
+	"uri": "/vi/2-etl-with-glue/3-load-data/",
+	"title": "Load (Tải dữ liệu)",
+	"tags": [],
+	"description": "",
+	"content": "Load (Tải) Sau khi thực hiện các phép biến đổi, ta cần phải đưa dữ liệu đã xử lý vào nơi lưu trữ để có thể sử dụng\nTrong job Amazon product pipeline, chọn Add node -\u0026gt; Target. Tại mục format, chọn Parquet là định dạng của dữ liệu cuối. Chọn Amazon S3. Tại mục S3 Target Location, bấm Browse S3 để trỏ tới nơi đích đến của dữ liệu vừa biến đổi. Chọn fcjworkshop -\u0026gt; warehouse Bấm Choose để chọn folder warehouse làm nơi chứa dữ liệu đã biến đổi. Bấm Save để lưu tiến trình. "
+},
+{
+	"uri": "/vi/3-query-with-athena/",
+	"title": "Truy vấn với Athena",
+	"tags": [],
+	"description": "",
+	"content": "Trong phần này chúng ta sẽ thực hiện truy vấn dữ liệu với dịch vụ Amazon Athena. Athena có thể truy vấn dữ liệu trên S3 thông qua AWS Glue Data Catalog.\nNội dung Tạo crawler Truy vấn với Athena "
+},
+{
+	"uri": "/vi/4-delete-resource/",
+	"title": "Dọn dẹp tài nguyên",
+	"tags": [],
+	"description": "",
+	"content": "Chúng ta sẽ tiến hành xóa các tài nguyên theo thứ tự sau:\nXóa ETL Jobs, Crawlers, Database Truy cập AWS Glue. Click ETL Jobs tại thanh điều hướng. Chọn Amazon product pipeline -\u0026gt; Actions -\u0026gt; Delete job(s). Click delete. Click Crawler tại thanh điều hướng. Chọn datalake-parquet-crawler. Chọn Action -\u0026gt; Delete crawler. Click delete. Click Database tại thanh điều hướng Tích chọn database datawarehouse Chọn Delete. Click Delete. Làm trống và xóa S3 Bucket Truy cập trang Dịch vụ S3 Chọn aws-glue-assets-xxxxxxx-region Chọn Empty. Nhập \u0026ldquo;permanently delete\u0026rdquo; để xác nhận làm trống (xóa toàn bộ dữ liệu) bucket. Click Empty. Click Exit. Chọn aws-glue-assets-xxxxxxx-region. Chọn Delete. Nhập tên bucket vừa chọn để xác nhận xóa bucket. Click Delete bucket. Chọn fcjworkshop-xxxx. Chọn Delete. Nhập tên bucket vừa chọn để xác nhận xóa bucket. Click Delete bucket. "
+},
+{
+	"uri": "/vi/2-etl-with-glue/4-run-pipeline/",
+	"title": "Tiến hành chạy ETL Pipeline",
+	"tags": [],
+	"description": "",
+	"content": "Tiến hành chạy Truy cập vào trang AWS Glue. Chọn ETL jobs. Click chọn Amazon product pipeline. Bấm Run để chạy. Chọn mục Run detail hoặc mục Runs để xem trạng thái của lần chạy. Sau khi chạy xong, ta có thể truy cập vào S3 Bucket để xem kết quả. Truy cập trang Amazon S3. Chọn bucket fcjworkshop -\u0026gt; warehouse. Trong folder warehouse chứa các file parquet mà Glue job đã chạy (là các file dữ liệu đã qua xử lý). "
+},
+{
+	"uri": "/vi/categories/",
+	"title": "Categories",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "/vi/tags/",
+	"title": "Tags",
+	"tags": [],
+	"description": "",
+	"content": ""
+}]
